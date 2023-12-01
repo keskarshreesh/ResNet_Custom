@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import models
 
 import os
 
@@ -78,4 +77,3 @@ for epoch in range(num_epochs):
 
     # Step the scheduler
     scheduler.step()
-
