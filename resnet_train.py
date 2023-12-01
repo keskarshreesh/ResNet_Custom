@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.utils.tensorboard import SummaryWriter
 
 import os
 
@@ -11,6 +12,8 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], 45)
 model = model.to(device)
+
+writer = SummaryWriter('../runs/experiment_1')
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0001)
@@ -47,6 +50,7 @@ for epoch in range(num_epochs):
 
     epoch_loss = running_loss / len(train_loader.dataset)
     print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
+    writer.add_scalar('Training Loss', epoch_loss, epoch)
 
     # Validation phase
     model.eval()  # Set model to evaluate mode
@@ -63,6 +67,7 @@ for epoch in range(num_epochs):
 
     epoch_val_loss = running_loss / len(val_loader.dataset)
     print(f'Epoch {epoch}/{num_epochs - 1}, Validation Loss: {epoch_val_loss:.4f}')
+    writer.add_scalar('Validation Loss', epoch_val_loss, epoch)
 
     # Checkpoint saving
     if epoch_val_loss < best_val_loss:
