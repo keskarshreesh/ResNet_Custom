@@ -50,11 +50,16 @@ class ResNet50(nn.Module):
     
     def _make_layer(self, block, out_channels, blocks, stride=1):
         downsample = None
+        print("Checking for downsample")
+        print(stride)
+        print(self.in_channels)
+        print(out_channels)
         if stride != 1 or self.in_channels != out_channels:
             downsample = nn.Sequential(
                 nn.Conv2d(self.in_channels, out_channels * 4, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(out_channels * 4),
             )
+        print(downsample)
             
         layers = []
         layers.append(block(self.in_channels, out_channels, stride, downsample))
