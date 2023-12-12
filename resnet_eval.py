@@ -8,6 +8,15 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], 45)
 model = model.to(device)
 
+model_checkpoint = torch.load("checkpoint.pth") # Path to be changed
+
+if 'state_dict' in model_checkpoint:
+    # Load the state dictionary into the model
+    model.load_state_dict(model_checkpoint['state_dict'])
+else:
+    # If the checkpoint contains the model directly
+    model.load_state_dict(model_checkpoint)
+
 model.eval()
 
 correct = 0
