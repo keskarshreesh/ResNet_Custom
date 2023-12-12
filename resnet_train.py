@@ -6,7 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.resisc_dataloader import get_train_loader, get_val_loader
+from dataloaders.fruits_dataloader import get_train_loader, get_val_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
