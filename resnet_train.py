@@ -6,7 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 from resnet_core import ResNet50, ResidualBlock
-from basic_dataloader import get_train_loader, get_val_loader
+from dataloaders.resisc_dataloader import get_train_loader, get_val_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -23,7 +23,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
 
 num_epochs = 100  # Adjust as per your need
 best_val_loss = float('inf')
-checkpoint_path = '../model_checkpoints'
+checkpoint_path = '../checkpoints'
 
 if not os.path.exists(checkpoint_path):
     os.makedirs(checkpoint_path)

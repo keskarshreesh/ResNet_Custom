@@ -8,14 +8,9 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize
 ])
 
-dataset = datasets.ImageFolder(root='../datasets/NWPU-RESISC45', transform=transform)
-
-total_size = len(dataset)
-train_size = int(0.7 * total_size)
-valid_size = int(0.15 * total_size)
-test_size = total_size - train_size - valid_size
-
-train_dataset, valid_dataset, test_dataset = random_split(dataset, [train_size, valid_size, test_size])
+train_dataset = datasets.ImageFolder(root='../../../datasets/butterflies/train', transform=transform)
+test_dataset = datasets.ImageFolder(root='../../../datasets/butterflies/test', transform=transform)
+valid_dataset = datasets.ImageFolder(root='../../../datasets/butterflies/valid', transform=transform)
 
 batch_size = 16
 
