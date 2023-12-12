@@ -13,7 +13,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], 45)
 model = model.to(device)
 
-writer = SummaryWriter('../runs/experiment_1')
+writer = SummaryWriter('../runs/experiment_2')
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0001)
@@ -23,7 +23,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
 
 num_epochs = 100  # Adjust as per your need
 best_val_loss = float('inf')
-checkpoint_path = '../checkpoints'
+checkpoint_path = '/common/users/skk139/ResNet_Custom/Aishwarya/checkpoints'
 
 if not os.path.exists(checkpoint_path):
     os.makedirs(checkpoint_path)
