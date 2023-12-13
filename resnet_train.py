@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,7 +11,9 @@ from dataloaders.resisc_dataloader import get_train_loader, get_val_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model = ResNet50(ResidualBlock, [3, 4, 6, 3], 45)
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
+
+model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
 writer = SummaryWriter('../runs/experiment_1')
@@ -33,10 +36,12 @@ val_loader = get_val_loader()
 
 print("Starting training...")
 
+total_batches = len(train_loader)
+
 for epoch in range(num_epochs):
     model.train()  # Set model to training mode
     running_loss = 0.0
-    for inputs, labels in train_loader:
+    for i, (inputs, labels) in enumerate(train_loader):
         inputs = inputs.to(device)
         labels = labels.to(device)
 
@@ -47,6 +52,13 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         running_loss += loss.item() * inputs.size(0)
+
+        percent_complete = 100. * (i + 1) / total_batches
+        print(f'Epoch {epoch+1}, {percent_complete:.2f}% complete')
+
+    epoch_loss = running_loss / len(train_loader.dataset)
+    print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
+    writer.add_scalar('Training Loss', epoch_loss, epoch)
 
     epoch_loss = running_loss / len(train_loader.dataset)
     print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
