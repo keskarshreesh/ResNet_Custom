@@ -1,18 +1,20 @@
 import torch
-
+import os
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.fruits_dataloader import get_test_loader
+from dataloaders.resisc_dataloader import get_test_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-model = ResNet50(ResidualBlock, [3, 4, 6, 3], 45)
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/fruits/fruits-360_dataset/fruits-360/Training"))
+
+model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-model_checkpoint = torch.load("checkpoint.pth") # Path to be changed
+model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be changed
 
-if 'state_dict' in model_checkpoint:
+if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
-    model.load_state_dict(model_checkpoint['state_dict'])
+    model.load_state_dict(model_checkpoint['model_state_dict'])
 else:
     # If the checkpoint contains the model directly
     model.load_state_dict(model_checkpoint)
@@ -28,6 +30,7 @@ test_loader = get_test_loader()
 with torch.no_grad():
     for images, labels in test_loader:
         # Forward pass to get outputs
+        images, labels = images.to(device), labels.to(device)
         outputs = model(images)
 
         # Get predictions from the maximum value
