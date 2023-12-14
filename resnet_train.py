@@ -15,7 +15,7 @@ num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/birds/
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-writer = SummaryWriter('../../runs/aishwarya/experiment_3/')
+writer = SummaryWriter('../runs/experiment_3')
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0001)
