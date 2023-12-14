@@ -1,7 +1,7 @@
 import torch
 import os
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.resisc_dataloader import get_test_loader
+from dataloaders.fruits_dataloader import get_test_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
