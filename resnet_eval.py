@@ -1,7 +1,7 @@
 import torch
 import os
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.resisc_dataloader import get_test_loader
+from dataloaders.birds_dataloader import get_test_loader
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -10,7 +10,7 @@ num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/birds/
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be changed
+model_checkpoint = torch.load("/common/users/skk139/ResNet_Custom/Aishwarya/checkpoints/model_epoch_95.pt") # Path to be changed
 
 if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
