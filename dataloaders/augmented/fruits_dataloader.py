@@ -27,7 +27,7 @@ batch_size = 16
 train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
 
 total_test_size = len(test_dataset_full)
-test_size = len(total_test_size)*0.6
+test_size = int(total_test_size*0.6)
 valid_size = total_test_size - test_size
 
 test_dataset, valid_dataset = random_split(test_dataset_full, [test_size, valid_size])
