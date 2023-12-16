@@ -62,10 +62,6 @@ for epoch in range(num_epochs):
     print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
     writer.add_scalar('Training Loss', epoch_loss, epoch)
 
-    epoch_loss = running_loss / len(train_loader.dataset)
-    print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
-    writer.add_scalar('Training Loss', epoch_loss, epoch)
-
     # Validation phase
     model.eval()  # Set model to evaluate mode
     running_loss = 0.0

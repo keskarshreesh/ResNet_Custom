@@ -1,5 +1,6 @@
 import torch
 import os
+import os
 from resnet_core import ResNet50, ResidualBlock
 import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
 
@@ -17,6 +18,7 @@ model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be c
 if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
     model.load_state_dict(model_checkpoint['model_state_dict'])
+    model.load_state_dict(model_checkpoint['model_state_dict'])
 else:
     # If the checkpoint contains the model directly
     model.load_state_dict(model_checkpoint)
@@ -32,6 +34,7 @@ test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if mode_
 with torch.no_grad():
     for images, labels in test_loader:
         # Forward pass to get outputs
+        images, labels = images.to(device), labels.to(device)
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
 
