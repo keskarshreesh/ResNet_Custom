@@ -1,7 +1,9 @@
 import torch
 import os
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.resisc_dataloader import get_test_loader
+import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+
+mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -24,7 +26,7 @@ model.eval()
 correct = 0
 total = 0
 
-test_loader = get_test_loader()
+test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_test_loader()
 
 # No gradient is needed for evaluation
 with torch.no_grad():

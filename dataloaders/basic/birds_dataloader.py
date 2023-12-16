@@ -1,6 +1,5 @@
-import torch
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 
 transform = transforms.Compose([
     transforms.Resize((224,224)),  # Resize to 224x224
@@ -8,14 +7,9 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize
 ])
 
-dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45', transform=transform)
-
-total_size = len(dataset)
-train_size = int(0.7 * total_size)
-valid_size = int(0.15 * total_size)
-test_size = total_size - train_size - valid_size
-
-train_dataset, valid_dataset, test_dataset = random_split(dataset, [train_size, valid_size, test_size])
+train_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/train', transform=transform)
+test_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/test', transform=transform)
+valid_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/valid', transform=transform)
 
 batch_size = 16
 
