@@ -7,13 +7,13 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 from resnet_core import ResNet50, ResidualBlock
-import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+import dataloaders.basic.butterflies_dataloader, dataloaders.augmented.butterflies_dataloader
 
 mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/butterflies/train"))
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
@@ -33,16 +33,19 @@ checkpoint_path = '../checkpoints'
 if not os.path.exists(checkpoint_path):
     os.makedirs(checkpoint_path)
 
-train_loader = dataloaders.augmented.resisc_dataloader.get_train_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_train_loader()
-val_loader = dataloaders.augmented.resisc_dataloader.get_val_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_val_loader()
+train_loader = dataloaders.augmented.butterflies_dataloader.get_train_loader() if mode_augment else dataloaders.basic.butterflies_dataloader.get_train_loader()
+val_loader = dataloaders.augmented.butterflies_dataloader.get_val_loader() if mode_augment else dataloaders.basic.butterflies_dataloader.get_val_loader()
 
 print("Starting training...")
+
+total_batches = len(train_loader)
 
 total_batches = len(train_loader)
 
 for epoch in range(num_epochs):
     model.train()  # Set model to training mode
     running_loss = 0.0
+
     for i, (inputs, labels) in enumerate(train_loader):
         inputs = inputs.to(device)
         labels = labels.to(device)
