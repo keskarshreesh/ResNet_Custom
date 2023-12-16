@@ -2,18 +2,18 @@ import torch
 import os
 import os
 from resnet_core import ResNet50, ResidualBlock
-import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+import dataloaders.basic.birds_dataloader, dataloaders.augmented.birds_dataloader
 
 mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/birds/train"))
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be changed
+model_checkpoint = torch.load("../checkpoints/model_epoch_95.pt") # Path to be changed
 
 if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
