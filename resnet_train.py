@@ -7,7 +7,7 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 from resnet_core import ResNet50, ResidualBlock
-import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+import dataloaders.basic.fruits_dataloader, dataloaders.augmented.fruits_dataloader
 
 mode_augment = True
 
@@ -33,8 +33,8 @@ checkpoint_path = '../checkpoints'
 if not os.path.exists(checkpoint_path):
     os.makedirs(checkpoint_path)
 
-train_loader = dataloaders.augmented.resisc_dataloader.get_train_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_train_loader()
-val_loader = dataloaders.augmented.resisc_dataloader.get_val_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_val_loader()
+train_loader = dataloaders.augmented.fruits_dataloader.get_train_loader() if mode_augment else dataloaders.basic.fruits_dataloader.get_train_loader()
+val_loader = dataloaders.augmented.fruits_dataloader.get_val_loader() if mode_augment else dataloaders.basic.fruits_dataloader.get_val_loader()
 
 print("Starting training...")
 

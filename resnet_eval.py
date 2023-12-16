@@ -1,7 +1,7 @@
 import torch
 import os
 from resnet_core import ResNet50, ResidualBlock
-import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+import dataloaders.basic.fruits_dataloader, dataloaders.augmented.fruits_dataloader
 
 mode_augment = True
 
@@ -26,7 +26,7 @@ model.eval()
 correct = 0
 total = 0
 
-test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_test_loader()
+test_loader = dataloaders.augmented.fruits_dataloader.get_test_loader() if mode_augment else dataloaders.basic.fruits_dataloader.get_test_loader()
 
 # No gradient is needed for evaluation
 with torch.no_grad():
