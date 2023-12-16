@@ -7,12 +7,12 @@ mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/fruits/fruits-360_dataset/Training"))
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be changed
+model_checkpoint = torch.load("../checkpoints/model_epoch_46.pt") # Path to be changed
 
 if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
