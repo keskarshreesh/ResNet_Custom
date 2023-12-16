@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -6,16 +7,18 @@ from torch.utils.tensorboard import SummaryWriter
 import os
 
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.fruits_dataloader import get_train_loader, get_val_loader
+import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+
+mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/fruits/fruits-360_dataset/fruits-360/Training"))
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-writer = SummaryWriter('../runs/experiment_1')
+writer = SummaryWriter('../runs/experiment_2')
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0001)
@@ -30,8 +33,8 @@ checkpoint_path = '../checkpoints'
 if not os.path.exists(checkpoint_path):
     os.makedirs(checkpoint_path)
 
-train_loader = get_train_loader()
-val_loader = get_val_loader()
+train_loader = dataloaders.augmented.resisc_dataloader.get_train_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_train_loader()
+val_loader = dataloaders.augmented.resisc_dataloader.get_val_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_val_loader()
 
 print("Starting training...")
 
@@ -54,6 +57,10 @@ for epoch in range(num_epochs):
 
         percent_complete = 100. * (i + 1) / total_batches
         print(f'Epoch {epoch+1}, {percent_complete:.2f}% complete')
+
+    epoch_loss = running_loss / len(train_loader.dataset)
+    print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')
+    writer.add_scalar('Training Loss', epoch_loss, epoch)
 
     epoch_loss = running_loss / len(train_loader.dataset)
     print(f'Epoch {epoch}/{num_epochs - 1}, Train Loss: {epoch_loss:.4f}')

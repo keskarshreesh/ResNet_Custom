@@ -1,11 +1,13 @@
 import torch
 import os
 from resnet_core import ResNet50, ResidualBlock
-from dataloaders.fruits_dataloader import get_test_loader
+import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
+
+mode_augment = True
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/fruits/fruits-360_dataset/fruits-360/Training"))
+num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-RESISC45"))
 
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
@@ -24,7 +26,7 @@ model.eval()
 correct = 0
 total = 0
 
-test_loader = get_test_loader()
+test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_test_loader()
 
 # No gradient is needed for evaluation
 with torch.no_grad():
