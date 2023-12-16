@@ -2,14 +2,14 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 transform = transforms.Compose([
-    transforms.Resize(224),  # Resize to 224x224
+    transforms.Resize((224,224)),  # Resize to 224x224
     transforms.ToTensor(),   # Convert to tensor
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize
 ])
 
-train_dataset = datasets.ImageFolder(root='../../../datasets/birds/train', transform=transform)
-test_dataset = datasets.ImageFolder(root='../../../datasets/birds/test', transform=transform)
-valid_dataset = datasets.ImageFolder(root='../../../datasets/birds/valid', transform=transform)
+train_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/train', transform=transform)
+test_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/test', transform=transform)
+valid_dataset = datasets.ImageFolder(root='/common/users/skk139/ResNet_Custom/datasets/birds/valid', transform=transform)
 
 batch_size = 16
 
