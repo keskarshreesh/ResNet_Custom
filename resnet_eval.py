@@ -3,7 +3,8 @@ import os
 from resnet_core import ResNet50, ResidualBlock
 import dataloaders.basic.resisc_dataloader, dataloaders.augmented.resisc_dataloader
 
-mode_augment = True
+model_augmented = False
+test_augment = False
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -12,7 +13,7 @@ num_classes = len(os.listdir("/common/users/skk139/ResNet_Custom/datasets/NWPU-R
 model = ResNet50(ResidualBlock, [3, 4, 6, 3], num_classes=num_classes)
 model = model.to(device)
 
-model_checkpoint = torch.load("../checkpoints/model_epoch_33.pt") # Path to be changed
+model_checkpoint = torch.load("../../model_backups/Shreesh/model_augmented/model_epoch_80.pt") if model_augmented else torch.load("../../model_backups/Shreesh/model_vanilla/model_epoch_33.pt") # Path to be changed
 
 if 'model_state_dict' in model_checkpoint:
     # Load the state dictionary into the model
@@ -26,7 +27,7 @@ model.eval()
 correct = 0
 total = 0
 
-test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if mode_augment else dataloaders.basic.resisc_dataloader.get_test_loader()
+test_loader = dataloaders.augmented.resisc_dataloader.get_test_loader() if test_augment else dataloaders.basic.resisc_dataloader.get_test_loader()
 
 # No gradient is needed for evaluation
 with torch.no_grad():
